@@ -1,4 +1,5 @@
-import React, {Fragment, useState} from 'react'
+import React, {Fragment, useState} from 'react';
+import uuid from 'uuid/v4';
 
 const Form = () => {
   // Crear State de Citas
@@ -10,6 +11,8 @@ const Form = () => {
     time: '',
     sintomas: '',
   })
+
+  const [error, updateError] = useState(false)
 
   // Función para actualizar el State
   const handleChange = e => {
@@ -23,10 +26,41 @@ const Form = () => {
   // Extraer valores
   const { pet, name, date, time, sintomas } = cita;
 
+  // Cuando el usuario presiona agregar cita
+  const submitAppointment = e => {
+    e.preventDefault();
+
+    // Validar 
+    if(pet.trim() === '' || name.trim() === '' || date.trim() === '' || time.trim() === ''|| sintomas.trim() === ''  ){
+      updateError(true)
+      return;
+    }
+
+    // Eliminar mensaje previo de error
+    updateError(false)
+
+    // Asignar ID
+    cita.id = uuid();
+    console.log(cita);
+
+    // Crear Cita 
+
+
+    // Reiniciar el Form
+
+
+  }
+
   return ( 
     <Fragment>
       <h2>Crear Cita</h2>
-      <form>
+
+      { error ? <p className="alerta-error">Todos los campos son obligatorios</p> : null}
+
+      <form
+        onSubmit={submitAppointment}
+        method="POST"
+      >
         <label>Nombre Mascota</label>
         <input 
           type="text"
