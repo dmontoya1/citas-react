@@ -1,7 +1,7 @@
 import React, {Fragment, useState} from 'react';
-import uuid from 'uuid/v4';
+import {v4 as uuid} from "uuid";
 
-const Form = () => {
+const Form = ({createCita}) => {
   // Crear State de Citas
 
   const [cita, updateCita] = useState({
@@ -16,10 +16,10 @@ const Form = () => {
 
   // Función para actualizar el State
   const handleChange = e => {
-    console.log("Escribiendo")
+    const {name, value} = e.target
     updateCita({
       ...cita, 
-      [e.target.name] : [e.target.value]
+      [name] : value
     })
   }
 
@@ -31,7 +31,7 @@ const Form = () => {
     e.preventDefault();
 
     // Validar 
-    if(pet.trim() === '' || name.trim() === '' || date.trim() === '' || time.trim() === ''|| sintomas.trim() === ''  ){
+    if(pet.trim() === '' || name.trim() === '' || date.trim() === '' || time.trim() === ''|| sintomas.trim() === '' ){
       updateError(true)
       return;
     }
@@ -41,13 +41,18 @@ const Form = () => {
 
     // Asignar ID
     cita.id = uuid();
-    console.log(cita);
 
     // Crear Cita 
-
+    createCita(cita);
 
     // Reiniciar el Form
-
+    updateCita({
+      pet: '',
+      name: '',
+      date: '',
+      time: '',
+      sintomas: '',
+    })
 
   }
 
